@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.fundaleonREST</groupId>
+	<artifactId>fundaleon-api-rest</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>fundaleon-api-rest</name>
+	<description>Proyecto de demostración para Spring Boot, desarrollado para gestionar un sistema de inventario y préstamo/retorno de libros. Implementa una API RESTful para realizar operaciones como la obtención de todos los libros, la búsqueda de libros, el préstamo de libros y la devolución de libros. Utiliza Spring Web para construir aplicaciones web, incluyendo aplicaciones RESTful, con Apache Tomcat como el contenedor integrado predeterminado. La aplicación está diseñada para la gestión eficiente de libros en una biblioteca, permitiendo a los usuarios realizar acciones relacionadas con el inventario y las transacciones de préstamo/retorno.</description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
