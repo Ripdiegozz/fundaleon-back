@@ -40,7 +40,6 @@ public class UserService {
         userToEdit.setFull_name(user.getFull_name());
         userToEdit.setPhone_number(user.getPhone_number());
         userToEdit.setRole(user.getRole());
-        userToEdit.setPassword(user.getPassword());
         userToEdit.setUpdated_at(new Date());
 
         // Guardar el usuario
@@ -78,12 +77,5 @@ public class UserService {
     public boolean doesUserExistByEmail(String email) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         return existingUser.isPresent();
-    }
-
-    public String hashPassword(String password) {
-        // Hash password
-
-
-        return password;
     }
 }

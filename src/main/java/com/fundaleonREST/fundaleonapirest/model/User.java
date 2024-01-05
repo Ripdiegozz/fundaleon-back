@@ -8,14 +8,11 @@ import java.util.UUID;
 @Table(name = "\"User\"", schema = "public")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     // TimeStamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt = new Date();
-    @Column(name = "password", nullable = true) // Ajusta la longitud según tus necesidades
-    private String password;
     @Column(name = "email", nullable = true) // Ajusta la longitud según tus necesidades
     private String email;
     @Column(name = "updated_at", nullable = true, updatable = true, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP") // Ajusta la longitud según tus necesidades
@@ -32,12 +29,12 @@ public class User {
     public User() {
     }
 
-    public User(String password, String email, String full_name, String phone_number, String cedula, String role) {
-        this.cedula = cedula;
-        this.password = password;
+    public User(UUID id, String email, String full_name, String phone_number, String cedula, String role) {
+        this.id = id;
         this.email = email;
         this.full_name = full_name;
         this.phone_number = phone_number;
+        this.cedula = cedula;
         this.role = role;
     }
 
@@ -49,9 +46,6 @@ public class User {
         return createdAt;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public String getEmail() {
         return email;
@@ -85,9 +79,6 @@ public class User {
         this.updated_at = updated_at;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -114,7 +105,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", created_at='" + createdAt + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", full_name='" + full_name + '\'' +
                 ", phone_number='" + phone_number + '\'' +
