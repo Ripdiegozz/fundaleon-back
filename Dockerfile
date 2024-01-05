@@ -6,5 +6,5 @@ RUN mvn clean install -DskipTests
 
 FROM openjdk:17-alpine
 EXPOSE 8080
-COPY ./target/fundaleon-api-rest-0.0.1-SNAPSHOT.war app.war
+COPY --from=build /target/*.war app.war
 ENTRYPOINT ["java","-jar","/app.war"]
