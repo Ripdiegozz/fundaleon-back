@@ -1,0 +1,16 @@
+com\fundaleonREST\fundaleonapirest\repository\UserRepository.class
+com\fundaleonREST\fundaleonapirest\service\CustomerService.class
+com\fundaleonREST\fundaleonapirest\model\User.class
+com\fundaleonREST\fundaleonapirest\ServletInitializer.class
+com\fundaleonREST\fundaleonapirest\configuration\ApiResponse.class
+com\fundaleonREST\fundaleonapirest\model\Customer.class
+com\fundaleonREST\fundaleonapirest\controller\BookController.class
+com\fundaleonREST\fundaleonapirest\model\Book.class
+com\fundaleonREST\fundaleonapirest\controller\UserController.class
+com\fundaleonREST\fundaleonapirest\service\BookService.class
+com\fundaleonREST\fundaleonapirest\configuration\CorsConfig.class
+com\fundaleonREST\fundaleonapirest\controller\CustomerController.class
+com\fundaleonREST\fundaleonapirest\FundaleonApiRestApplication.class
+com\fundaleonREST\fundaleonapirest\service\UserService.class
+com\fundaleonREST\fundaleonapirest\repository\CustomerRepository.class
+com\fundaleonREST\fundaleonapirest\repository\BookRepository.class
