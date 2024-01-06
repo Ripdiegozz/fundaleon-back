@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ public class BookService {
     }
 
     public Book deleteBookById(UUID id) {
-        // Verificar si el usuario existe en la base de datos
+        // Verificar si el libro existe en la base de datos
         Optional<Book> optionalBook = bookRepository.findById(id);
         System.out.println(id);
         // Check if optionalBook is actually empty
@@ -59,13 +60,13 @@ public class BookService {
             throw new RuntimeException("El Libro no existe en la base de datos con ese ID");
         }
 
-        // Recopilar datos del usuario
+        // Recopilar datos del libro
         Book book = optionalBook.get();
 
-        // Eliminar el usuario
+        // Eliminar el libro
         bookRepository.deleteById(id);
 
-        // Devolver los datos del usuario eliminado
+        // Devolver los datos del libro eliminado
         return book;
     }
 
@@ -78,6 +79,11 @@ public class BookService {
 
         // Devolver los datos del usuario
         return optionalBook.get();
+    }
+
+    public List<Book> getAllBooks() {
+        // Devolver los datos del usuario
+        return bookRepository.findAll();
     }
 
     public boolean doesBookExistByIsbn(String isbn) {
