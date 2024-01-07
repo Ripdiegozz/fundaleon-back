@@ -66,12 +66,9 @@ public class UserService {
     public User getUserById(UUID id) {
         // Verificar si el usuario existe en la base de datos
         Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
-            throw new RuntimeException("El usuario no existe en la base de datos con ese ID");
-        }
+        return optionalUser.orElse(null);
 
         // Devolver los datos del usuario
-        return optionalUser.get();
     }
 
     public boolean doesUserExistByEmail(String email) {

@@ -8,6 +8,7 @@ public class ApiResponse {
     public ApiResponse(String status, String message, Object data) {
         this.status = status;
         this.message = message;
+        // Send data in a array
         this.data = data;
     }
 
