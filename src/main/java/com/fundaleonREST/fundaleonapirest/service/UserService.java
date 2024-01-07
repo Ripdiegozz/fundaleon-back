@@ -46,21 +46,15 @@ public class UserService {
         return userRepository.save(userToEdit);
     }
 
-    public User deleteUserById(UUID id) {
+    public void deleteUserById(UUID id) {
         // Verificar si el usuario existe en la base de datos
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {
             throw new RuntimeException("El usuario no existe en la base de datos con ese ID");
         }
 
-        // Recopilar datos del usuario
-        User user = optionalUser.get();
-
         // Eliminar el usuario
         userRepository.deleteById(id);
-
-        // Devolver los datos del usuario eliminado
-        return user;
     }
 
     public User getUserById(UUID id) {
@@ -71,8 +65,4 @@ public class UserService {
         // Devolver los datos del usuario
     }
 
-    public boolean doesUserExistByEmail(String email) {
-        Optional<User> existingUser = userRepository.findByEmail(email);
-        return existingUser.isPresent();
-    }
 }
