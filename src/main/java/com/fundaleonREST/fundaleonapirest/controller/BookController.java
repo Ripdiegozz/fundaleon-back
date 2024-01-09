@@ -43,7 +43,7 @@ public class BookController {
         // Additional validations or logic before saving
         // Guardar el usuario
         Book bookEdited = bookService.editBook(book);
-        return ResponseEntity.ok(new ApiResponse("200", "Editando libro en la base de datos", bookEdited));
+        return ResponseEntity.ok(new ApiResponse("200", "Editando libro en la base de datos.", bookEdited));
     }
     @GetMapping ("/get/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable UUID id) {

@@ -49,7 +49,7 @@ public class BookService {
         return bookRepository.save(bookToEdit);
     }
 
-    public Book deleteBookById(UUID id) {
+    public void deleteBookById(UUID id) {
         // Verificar si el libro existe en la base de datos
         Optional<Book> optionalBook = bookRepository.findById(id);
         System.out.println(id);
@@ -67,7 +67,6 @@ public class BookService {
         bookRepository.deleteById(id);
 
         // Devolver los datos del libro eliminado
-        return book;
     }
 
     public Book getBookById(UUID id) {

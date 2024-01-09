@@ -5,9 +5,8 @@ import com.fundaleonREST.fundaleonapirest.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.UUID;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -48,23 +47,19 @@ public class CustomerService {
         return customerRepository.save(customerToEdit);
     }
 
-    public Customer deleteCustomerById(UUID id) {
+    public void deleteCustomerById(UUID id) {
         // Verificar si el usuario existe en la base de datos
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isEmpty()) {
-            throw new RuntimeException("El usuario no existe en la base de datos con ese ID");
+            throw new RuntimeException("El usuario no existe en la base de datos con ese ID.");
         }
-
-        // Recopilar datos del usuario
-        Customer customer = optionalCustomer.get();
-
         // Eliminar el usuario
         customerRepository.deleteById(id);
-
-        // Devolver los datos del usuario eliminado
-        return customer;
     }
-
+    public List<Customer> getAllCustomers() {
+        // Obtener todos los usuarios
+        return customerRepository.findAll();
+    }
     public Customer getCustomerById(UUID id) {
         // Verificar si el usuario existe en la base de datos
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
@@ -75,9 +70,59 @@ public class CustomerService {
         // Devolver los datos del usuario
         return optionalCustomer.get();
     }
-
     public boolean doesCustomerExistByEmail(String email) {
         Optional<Customer> existingCustomer = customerRepository.findByEmail(email);
         return existingCustomer.isPresent();
+    }
+    public Map<String, Object> getCustomersCountByMonth() {
+        // Obtener todos los usuarios
+        List<Customer> customersFromDb = customerRepository.findAll();
+
+        // Filtrar solo los usuarios creados este año
+        customersFromDb.removeIf(customer -> customer.getCreated_at().getYear() != new Date().getYear());
+
+        // Inicializar el objeto con los recuentos y las etiquetas de los meses
+        Map<String, Object> result = new HashMap<>();
+
+        // Inicializar el mapa de recuentos por mes
+        Map<String, Integer> countByMonth = new TreeMap<>(); // Usar TreeMap para ordenar las claves
+
+        // Hacer un Map con el key del número de mes y el valor de Nombre del mes para ordenarlos
+        Map<String, String> monthNames = new HashMap<>();
+        monthNames.put("01", "Enero");
+        monthNames.put("02", "Febrero");
+        monthNames.put("03", "Marzo");
+        monthNames.put("04", "Abril");
+        monthNames.put("05", "Mayo");
+        monthNames.put("06", "Junio");
+        monthNames.put("07", "Julio");
+        monthNames.put("08", "Agosto");
+        monthNames.put("09", "Septiembre");
+        monthNames.put("10", "Octubre");
+        monthNames.put("11", "Noviembre");
+        monthNames.put("12", "Diciembre");
+
+        // Recorrer la lista de usuarios
+        for (Customer customer : customersFromDb) {
+            // Ver cuando fue creado el cliente obteniendo el mes, ex: 1973-01-16 09:04:49.0
+            String month = customer.getCreated_at().toString().split("-")[1];
+
+            // Incrementar el recuento del mes
+            countByMonth.put(month, countByMonth.getOrDefault(month, 0) + 1);
+        }
+
+        // Agregar el recuento por mes al resultado
+        result.put("count", countByMonth);
+
+        // Obtener la lista de nombres de meses correspondientes a los meses presentes en count
+        List<String> monthLabels = countByMonth.keySet().stream()
+                .sorted(Comparator.comparingInt(Integer::parseInt)) // Ordenar claves numéricamente
+                .map(monthNames::get)
+                .collect(Collectors.toList());
+
+        // Agregar la lista de nombres de meses al resultado
+        result.put("monthLabels", monthLabels);
+
+        return result;
     }
 }
