@@ -56,10 +56,12 @@ public class CustomerService {
         // Eliminar el usuario
         customerRepository.deleteById(id);
     }
+
     public List<Customer> getAllCustomers() {
         // Obtener todos los usuarios
         return customerRepository.findAll();
     }
+
     public Customer getCustomerById(UUID id) {
         // Verificar si el usuario existe en la base de datos
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
@@ -70,10 +72,16 @@ public class CustomerService {
         // Devolver los datos del usuario
         return optionalCustomer.get();
     }
+
     public boolean doesCustomerExistByEmail(String email) {
         Optional<Customer> existingCustomer = customerRepository.findByEmail(email);
         return existingCustomer.isPresent();
     }
+
+    public long countAllCustomers() {
+        return customerRepository.count();
+    }
+
     public Map<String, Object> getCustomersCountByMonth() {
         // Obtener todos los usuarios
         List<Customer> customersFromDb = customerRepository.findAll();

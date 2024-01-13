@@ -8,8 +8,10 @@ import java.util.UUID;
 import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, UUID> {
     Optional<Book> findById(UUID id);
-    Book findByIsbn(String isbn);
+    Optional<Book> findByIsbn(String isbn);
+    Optional<Book> findByTitle(String title);
     void deleteById(UUID id);
     List<Book> findAll();
+    List<Book> findBooksByAuthor(String author);
     boolean existsByIsbn(String isbn);
 }
