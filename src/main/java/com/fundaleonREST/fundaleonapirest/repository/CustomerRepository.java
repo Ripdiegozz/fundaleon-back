@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     Optional<Customer> findById(UUID id);
     Optional<Customer> findByEmail(String email);
+    Optional<Customer> findCustomerByIdentification(String identification);
+    Optional<Customer> findCustomerByEmail(String email);
     void deleteById(UUID id);
 }

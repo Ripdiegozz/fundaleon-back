@@ -73,6 +73,28 @@ public class CustomerService {
         return optionalCustomer.get();
     }
 
+    public Customer getCustomerByEmail(String email) {
+        // Verificar si el usuario existe en la base de datos
+        Optional<Customer> optionalCustomer = customerRepository.findByEmail(email);
+        if (optionalCustomer.isEmpty()) {
+            throw new RuntimeException("El usuario no existe en la base de datos con ese email");
+        }
+
+        // Devolver los datos del usuario
+        return optionalCustomer.get();
+    }
+
+    public Customer getCustomerByIdentification(String identification) {
+        // Verificar si el usuario existe en la base de datos
+        Optional<Customer> optionalCustomer = customerRepository.findCustomerByIdentification(identification);
+        if (optionalCustomer.isEmpty()) {
+            throw new RuntimeException("El usuario no existe en la base de datos con esa cédula");
+        }
+
+        // Devolver los datos del usuario
+        return optionalCustomer.get();
+    }
+
     public boolean doesCustomerExistByEmail(String email) {
         Optional<Customer> existingCustomer = customerRepository.findByEmail(email);
         return existingCustomer.isPresent();

@@ -20,11 +20,16 @@ public class CustomerController {
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCustomer(@RequestBody Customer Customer) {
-        // Verificar si el usuario existe en la base de datos
+        // Verificar si el usuario existe en la base de datos por identificación
+        if (customerService.getCustomerByIdentification(Customer.getIdentification()) == null || customerService.getCustomerByIdentification(Customer.getIdentification()).getId() == Customer.getId()) {
+            return ResponseEntity.badRequest().body(new ApiResponse("400", "Ya existe un usuario con esta identificación", null));
+        }
+        // Verificar si el usuario existe en la base de datos por email
         if (customerService.doesCustomerExistByEmail(Customer.getEmail())) {
             return ResponseEntity.badRequest().body(new ApiResponse("400", "Ya existe un usuario con este correo electrónico", null));
         }
-        // Additional validations or logic before saving
+        // QUIT the spaces at the beginning and end of the string
+        Customer.setFull_name(Customer.getFull_name().trim());
         // Guardar el usuario
         Customer CustomerRegistered = customerService.saveCustomer(Customer);
         return ResponseEntity.ok(new ApiResponse("200", "Guardando usuario en la base de datos", CustomerRegistered.toString()));
@@ -52,6 +57,29 @@ public class CustomerController {
         // Obtener todos los libros
         return ResponseEntity.ok(new ApiResponse("200", "Contando todos los clientes de la base de datos.", customerService.countAllCustomers()));
     }
+    @GetMapping ("/get/{id}")
+    public ResponseEntity<ApiResponse> getCustomerById(@PathVariable UUID id) {
+        // Encontrar Usuario
+        Customer customer = customerService.getCustomerById(id);
+        // Aquí puedes usar el ID para buscar el usuario en la base de datos u realizar otras operaciones
+        return ResponseEntity.ok(new ApiResponse("200", "Obteniendo información del cliente con ID: " + id, customer));
+    }
+
+    @GetMapping ("/get/email/{email}")
+    public ResponseEntity<ApiResponse> getCustomerByEmail(@PathVariable String email) {
+        // Encontrar Usuario
+        Customer Customer = customerService.getCustomerByEmail(email);
+        // Aquí puedes usar el ID para buscar el usuario en la base de datos u realizar otras operaciones
+        return ResponseEntity.ok(new ApiResponse("200", "Obteniendo información del cliente con email: " + email, Customer));
+    }
+
+    @GetMapping ("/get/identification/{identification}")
+    public ResponseEntity<ApiResponse> getCustomerByIdentification(@PathVariable String identification) {
+        // Encontrar Usuario
+        Customer customer = customerService.getCustomerByIdentification(identification);
+        // Aquí puedes usar el ID para buscar el usuario en la base de datos u realizar otras operaciones
+        return ResponseEntity.ok(new ApiResponse("200", "Obteniendo información del cliente con identificación: " + identification, customer));
+    }
 
     @GetMapping("get/count/month")
     public ResponseEntity<ApiResponse> getCustomersCountByMonth() {
@@ -59,21 +87,13 @@ public class CustomerController {
         return ResponseEntity.ok(new ApiResponse("200", "Obteniendo todos los clientes de la base de datos por mes.", customerService.getCustomersCountByMonth()));
     }
 
-    @GetMapping ("/get/{id}")
-    public ResponseEntity<String> getCustomerById(@PathVariable UUID id) {
-        // Encontrar Usuario
-        Customer Customer = customerService.getCustomerById(id);
-        // Aquí puedes usar el ID para buscar el usuario en la base de datos u realizar otras operaciones
-        return ResponseEntity.ok("Obteniendo información del cliente con ID: " + id + "\n" + Customer.toString());
-    }
-
     @DeleteMapping ("/delete/{id}")
-    public ResponseEntity<String> deleteCustomerById(@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse> deleteCustomerById(@PathVariable UUID id) {
         // Obtener el usuario
-        Customer Customer = customerService.getCustomerById(id);
+        Customer customer = customerService.getCustomerById(id);
         // Eliminar Usuario
         customerService.deleteCustomerById(id);
         // Aquí puedes usar el ID para buscar el usuario en la base de datos u realizar otras operaciones
-        return ResponseEntity.ok("Eliminando cliente con ID: " + id + "\n" + Customer.toString());
+        return ResponseEntity.ok(new ApiResponse("200", "Eliminando usuario con ID: " + id, customer));
     }
 }
