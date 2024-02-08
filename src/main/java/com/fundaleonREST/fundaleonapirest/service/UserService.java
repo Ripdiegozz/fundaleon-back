@@ -5,6 +5,7 @@ import com.fundaleonREST.fundaleonapirest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Date;
 import java.util.UUID;
 import java.util.Optional;
@@ -61,8 +62,10 @@ public class UserService {
         // Verificar si el usuario existe en la base de datos
         Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.orElse(null);
-
-        // Devolver los datos del usuario
     }
 
+    public Iterable<User> getAllUsers() {
+        // Obtener todos los usuarios
+        return userRepository.findAll();
+    }
 }

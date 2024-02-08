@@ -34,6 +34,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/get/all")
+    public ResponseEntity<ApiResponse> getAllUsers() {
+        // Obtener todos los usuarios
+        Iterable<User> users = userService.getAllUsers();
+        // Construir la respuesta
+        ApiResponse response = new ApiResponse("200", "Obteniendo todos los usuarios de la base de datos", users);
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<ApiResponse> editUser(@RequestBody User user) {
         System.out.println("Editando usuario en la base de datos" + user.toString());
