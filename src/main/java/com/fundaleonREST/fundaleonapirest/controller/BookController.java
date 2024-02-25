@@ -85,6 +85,18 @@ public class BookController {
         return ResponseEntity.ok(new ApiResponse("200", "Editando libro en la base de datos.", bookEdited));
     }
 
+    @PutMapping("/change/status/{id}/{status}")
+    public ResponseEntity<ApiResponse> changeBookStatus(@PathVariable UUID id, @PathVariable boolean status) {
+        // Verificar si el libro existe en la base de datos
+        if (bookService.getBookById(id) == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse("400", "No se encontró ningún libro con este ID. Por favor, use otro ID.", null));
+        }
+        // Additional validations or logic before saving
+        // Guardar el usuario
+        bookService.changeBookStatus(id, status);
+        return ResponseEntity.ok(new ApiResponse("200", "Cambiando estado del libro en la base de datos.", bookService.getBookById(id)));
+    }
+
     @GetMapping ("/get/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable UUID id) {
         // Encontrar Libro

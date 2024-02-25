@@ -1,9 +1,12 @@
 package com.fundaleonREST.fundaleonapirest.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.Date;
 import java.util.UUID;
 
+@Getter
 @Entity(name = "customer")
 @Table(name = "customer")
 public class Customer {
@@ -18,77 +21,48 @@ public class Customer {
     private Date updated_at = null;
     private String address;
     private String job;
+    private boolean status = true;
 
     public Customer() {
     }
 
-    public Customer(String identification, String full_name, String email, String phone_number, String address, String job) {
+    public Customer(String identification, String full_name, String email, String phone_number, String address,
+                    String job, Boolean status) {
         this.identification = identification;
         this.full_name = full_name;
         this.email = email;
         this.phone_number = phone_number;
         this.address = address;
         this.job = job;
-    }
-
-    public UUID getId() {
-        return id;
+        this.status = status;
     }
 
     public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getIdentification() {
-        return identification;
-    }
-
     public void setIdentification(String identification) {
         this.identification = identification;
-    }
-
-    public String getFull_name() {
-        return full_name;
     }
 
     public void setFull_name(String full_name) {
         this.full_name = full_name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
     }
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
-        return updated_at;
-    }
-
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
 
-    public String getPhone_number() {
-        return phone_number;
-    }
-
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
-    }
-
-    public String getAddress() {
-        return address;
     }
 
     public void setAddress(String address) {
@@ -99,10 +73,9 @@ public class Customer {
         this.job = job;
     }
 
-    public String getJob() {
-        return job;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -115,6 +88,7 @@ public class Customer {
                 ", updated_at=" + updated_at +
                 ", address='" + address + '\'' +
                 ", job='" + job + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

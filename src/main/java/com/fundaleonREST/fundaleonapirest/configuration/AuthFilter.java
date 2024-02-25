@@ -27,9 +27,10 @@ public class AuthFilter extends OncePerRequestFilter {
         try {
             final UUID authHeader = UUID.fromString(request.getHeader("Authorization"));
             User userAuthorized = this.userService.getUserById(authHeader);
+            System.out.println(userAuthorized);
 
             // Unfiltered routes
-            String[] paths = {"/book/get/", "/customer/get/all/count", "/customer/get/count/month", };
+            String[] paths = {"/book/get/", "/customer/get/all/count", "/customer/get/count/month", "/user/get/"};
             for (String path : paths) {
                 if (request.getRequestURI().contains(path)) {
                     filterChain.doFilter(request, response);
@@ -37,12 +38,13 @@ public class AuthFilter extends OncePerRequestFilter {
                 }
             }
 
-            if (userAuthorized != null) {
+            if (userAuthorized.getRole().contains("ADMIN")) {
                 filterChain.doFilter(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             }
         } catch (Exception e) {
+            System.out.println("Caught exception: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }
     }

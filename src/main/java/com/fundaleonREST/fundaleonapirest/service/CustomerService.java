@@ -1,5 +1,6 @@
 package com.fundaleonREST.fundaleonapirest.service;
 
+import com.fundaleonREST.fundaleonapirest.model.Book;
 import com.fundaleonREST.fundaleonapirest.model.Customer;
 import com.fundaleonREST.fundaleonapirest.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class CustomerService {
 
     public Customer saveCustomer(Customer customer) {
         System.out.println("Guardando cliente en la base de datos" + customer.toString());
+
+        if (customerRepository.findCustomerByIdentification(customer.getIdentification()).isPresent()) {
+            throw new RuntimeException("Ya existe un cliente con esta identificación. Por favor, use otra identificación.");
+        }
+
         // Si no existe, guardar el usuario
         return customerRepository.save(customer);
     }
@@ -87,10 +93,10 @@ public class CustomerService {
     public Customer getCustomerByIdentification(String identification) {
         // Verificar si el usuario existe en la base de datos
         Optional<Customer> optionalCustomer = customerRepository.findCustomerByIdentification(identification);
-        if (optionalCustomer.isEmpty()) {
-            throw new RuntimeException("El usuario no existe en la base de datos con esa cédula");
-        }
 
+        if (optionalCustomer.isEmpty()) {
+            throw new RuntimeException("El usuario no existe en la base de datos con esa identificación");
+        }
         // Devolver los datos del usuario
         return optionalCustomer.get();
     }
@@ -99,7 +105,22 @@ public class CustomerService {
         Optional<Customer> existingCustomer = customerRepository.findByEmail(email);
         return existingCustomer.isPresent();
     }
+    public void changeCustomerStatus(UUID id, boolean status) {
+        // Verificar si el libro existe en la base de datos
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
+        if (optionalCustomer.isEmpty()) {
+            throw new RuntimeException("El cliente no existe en la base de datos con ese ID");
+        }
+
+        // Recopilar datos del libro
+        Customer customerToEdit = optionalCustomer.get();
+        customerToEdit.setStatus(status);
+        customerToEdit.setUpdated_at(new Date());
+
+        // Guardar el libro
+        customerRepository.save(customerToEdit);
+    }
     public long countAllCustomers() {
         return customerRepository.count();
     }

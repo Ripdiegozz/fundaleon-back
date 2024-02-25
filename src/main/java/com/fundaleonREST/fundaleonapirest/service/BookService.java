@@ -59,21 +59,30 @@ public class BookService {
     public void deleteBookById(UUID id) {
         // Verificar si el libro existe en la base de datos
         Optional<Book> optionalBook = bookRepository.findById(id);
-        System.out.println(id);
-        // Check if optionalBook is actually empty
-        System.out.println(optionalBook.isEmpty());
 
         if (optionalBook.isEmpty()) {
             throw new RuntimeException("El Libro no existe en la base de datos con ese ID");
         }
 
-        // Recopilar datos del libro
-        Book book = optionalBook.get();
-
         // Eliminar el libro
         bookRepository.deleteById(id);
+    }
 
-        // Devolver los datos del libro eliminado
+    public void changeBookStatus(UUID id, boolean status) {
+        // Verificar si el libro existe en la base de datos
+        Optional<Book> optionalBook = bookRepository.findById(id);
+
+        if (optionalBook.isEmpty()) {
+            throw new RuntimeException("El libro no existe en la base de datos con ese ID");
+        }
+
+        // Recopilar datos del libro
+        Book bookToEdit = optionalBook.get();
+        bookToEdit.setStatus(status);
+        bookToEdit.setUpdated_at(new Date());
+
+        // Guardar el libro
+        bookRepository.save(bookToEdit);
     }
 
     public Book getBookById(UUID id) {

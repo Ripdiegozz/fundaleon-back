@@ -20,15 +20,6 @@ public class CustomerController {
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCustomer(@RequestBody Customer Customer) {
-        // Verificar si el usuario existe en la base de datos por identificación
-        if (customerService.getCustomerByIdentification(Customer.getIdentification()) == null || customerService.getCustomerByIdentification(Customer.getIdentification()).getId() == Customer.getId()) {
-            return ResponseEntity.badRequest().body(new ApiResponse("400", "Ya existe un usuario con esta identificación", null));
-        }
-        // Verificar si el usuario existe en la base de datos por email
-        if (customerService.doesCustomerExistByEmail(Customer.getEmail())) {
-            return ResponseEntity.badRequest().body(new ApiResponse("400", "Ya existe un usuario con este correo electrónico", null));
-        }
-        // QUIT the spaces at the beginning and end of the string
         Customer.setFull_name(Customer.getFull_name().trim());
         // Guardar el usuario
         Customer CustomerRegistered = customerService.saveCustomer(Customer);
@@ -85,6 +76,18 @@ public class CustomerController {
     public ResponseEntity<ApiResponse> getCustomersCountByMonth() {
         // Obtener todos los libros
         return ResponseEntity.ok(new ApiResponse("200", "Obteniendo todos los clientes de la base de datos por mes.", customerService.getCustomersCountByMonth()));
+    }
+
+    @PutMapping("/change/status/{id}/{status}")
+    public ResponseEntity<ApiResponse> changeCustomerStatus(@PathVariable UUID id, @PathVariable boolean status) {
+        // Verificar si el libro existe en la base de datos
+        if (customerService.getCustomerById(id) == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse("400", "No se encontró ningún cliente con este ID. Por favor, use otro ID.", null));
+        }
+        // Additional validations or logic before saving
+        // Guardar el usuario
+        customerService.changeCustomerStatus(id, status);
+        return ResponseEntity.ok(new ApiResponse("200", "Cambiando estado del cliente en la base de datos.", customerService.getCustomerById(id)));
     }
 
     @DeleteMapping ("/delete/{id}")
